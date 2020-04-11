@@ -1,0 +1,41 @@
+# More details on how to configure the Travis build
+# https://docs.travis-ci.com/user/customizing-the-build/
+
+language: java
+
+matrix:
+  include:
+    - os: linux
+      jdk:
+        - openjdk8
+    - os: osx
+      osx_image: xcode11.3
+      env: SKIP_RELEASE=true
+      before_install:
+        - brew install git-lfs
+        - git lfs install
+      before_script:
+        - git lfs pull
+
+#Skipping install step to avoid having Travis run arbitrary './gradlew assemble' task
+# https://docs.travis-ci.com/user/customizing-the-build/#Skipping-the-Installation-Step
+install: skip
+
+#Don't build tags
+branches:
+  except:
+    - /^v\d/
+
+#Build and perform release (if needed)
+script:
+  - ./gradlew build -s && ./gradlew ciPerformRelease
+
+#Cache build artifacts
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.m2/
