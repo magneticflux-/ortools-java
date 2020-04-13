@@ -12,7 +12,7 @@ repositories {
     jcenter()
 }
 
-val bundle by configurations.creating
+val bundle: Configuration by configurations.creating
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
