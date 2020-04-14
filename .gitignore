@@ -195,7 +195,8 @@ fabric.properties
 
 ### Gradle template
 .gradle
-/build/
+**/build/
+!src/**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -210,7 +211,3 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 # Custom unignores here:
-!/libs/**
-!/src/main/resources/darwin/**
-!/src/main/resources/linux-x86-64/**
-!/src/main/resources/win32-x86-64/**

@@ -1,5 +1,5 @@
 shipkit {
-    gitHub.repository = "magneticflux-/jna-google-ortools"
+    gitHub.repository = "magneticflux-/ortools-java"
 
     gitHub.readOnlyAuthToken = "0036558481e1d3e998659374a3942d9186b7ca6b"
 
@@ -14,10 +14,9 @@ allprojects {
 
             pkg {
                 repo = 'maven'
-                name = 'jna-google-ortools'
                 licenses = ['Apache-2.0']
-                labels = ['jvm', 'native', 'google-ortools', 'ortools', 'or-tools', 'jna']
-                vcsUrl = 'https://github.com/magneticflux-/jna-google-ortools.git'
+                labels = ['jvm', 'java', 'native', 'google-ortools', 'ortools', 'or-tools', 'jna']
+                vcsUrl = 'https://github.com/magneticflux-/ortools-java.git'
             }
         }
     }
