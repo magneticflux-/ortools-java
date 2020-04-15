@@ -9,6 +9,7 @@ subprojects {
 
     repositories {
         jcenter()
+        maven("https://dl.bintray.com/magneticflux/maven")
     }
 
     configure<JavaPluginConvention> {

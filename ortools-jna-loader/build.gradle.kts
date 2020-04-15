@@ -13,6 +13,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("net.java.dev.jna:jna:5.5.0")
     implementation("com.google.protobuf:protobuf-java:3.11.4")
+    implementation("com.skaggsm:classpath-resource-extractor:0.1.0")
     api(files("libs/com.google.ortools.jar"))
     bundle(files("libs/com.google.ortools.jar"))
 
