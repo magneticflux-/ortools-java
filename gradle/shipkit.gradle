@@ -16,6 +16,8 @@ allprojects {
                 repo = 'maven'
                 licenses = ['Apache-2.0']
                 labels = ['jvm', 'java', 'native', 'google-ortools', 'ortools', 'or-tools', 'jna']
+                githubRepo = 'magneticflux-/classpath-resource-extractor'
+                githubReleaseNotesFile = 'docs/release-notes.md'
                 vcsUrl = 'https://github.com/magneticflux-/ortools-java.git'
             }
         }
