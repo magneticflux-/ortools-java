@@ -3,6 +3,9 @@
 
 language: java
 
+git:
+  lfs_skip_smudge: true
+
 matrix:
   include:
     - os: linux
@@ -14,12 +17,9 @@ matrix:
       before_install:
         - brew install git-lfs
         - git lfs install
-      before_script:
-        - git lfs pull
 
-#Skipping install step to avoid having Travis run arbitrary './gradlew assemble' task
-# https://docs.travis-ci.com/user/customizing-the-build/#Skipping-the-Installation-Step
-install: skip
+install:
+  - git lfs pull
 
 #Don't build tags
 branches:
@@ -39,3 +39,4 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.m2/
+    - .git/lfs
