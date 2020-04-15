@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    java
+    `java-library`
     kotlin("jvm") version "1.3.71"
     id("com.github.ben-manes.versions") version "0.28.0"
 }
@@ -43,7 +43,8 @@ tasks.test {
             TestLogEvent.PASSED,
             TestLogEvent.SKIPPED,
             TestLogEvent.FAILED,
-            TestLogEvent.STANDARD_ERROR
+            TestLogEvent.STANDARD_ERROR,
+            TestLogEvent.STANDARD_OUT
         )
         exceptionFormat = TestExceptionFormat.FULL
     }

@@ -1,9 +1,9 @@
 plugins {
-    java
+    `java-library`
 }
 
 dependencies {
-    implementation(project(":ortools-jna-loader"))
+    runtimeOnly(project(":ortools-jna-loader"))
 }
 
 //bintrayUpload.enabled = true

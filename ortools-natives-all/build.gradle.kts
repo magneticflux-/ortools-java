@@ -1,11 +1,11 @@
 plugins {
-    java
+    `java-library`
 }
 
 dependencies {
-    implementation(project(":ortools-natives-linux"))
-    implementation(project(":ortools-natives-macos"))
-    implementation(project(":ortools-natives-windows"))
+    runtimeOnly(project(":ortools-natives-linux"))
+    runtimeOnly(project(":ortools-natives-macos"))
+    runtimeOnly(project(":ortools-natives-windows"))
 }
 
 //bintrayUpload.enabled = true
