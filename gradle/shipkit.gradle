@@ -14,6 +14,7 @@ allprojects {
 
             pkg {
                 repo = 'maven'
+                name = project.name
                 licenses = ['Apache-2.0']
                 labels = ['jvm', 'java', 'native', 'google-ortools', 'ortools', 'or-tools', 'jna']
                 githubRepo = 'magneticflux-/classpath-resource-extractor'

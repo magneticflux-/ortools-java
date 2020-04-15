@@ -7,5 +7,3 @@ dependencies {
     runtimeOnly(project(":ortools-natives-macos"))
     runtimeOnly(project(":ortools-natives-windows"))
 }
-
-//bintrayUpload.enabled = true
