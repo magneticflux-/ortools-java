@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(project(":ortools-jna-loader"))
+    runtimeOnly(project(":ortools-loader"))
 }

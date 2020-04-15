@@ -1,7 +1,7 @@
 rootProject.name = "ortools-java"
 
 include(
-    "ortools-jna-loader",
+    "ortools-loader",
     "ortools-natives-all",
     "ortools-natives-linux",
     "ortools-natives-macos",

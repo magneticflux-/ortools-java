@@ -10,10 +10,10 @@ import io.kotest.matchers.shouldBe
  */
 class OrToolsTest : StringSpec({
     "Library is found" {
-        JnaOrToolsHelper.loadLibrary()
+        OrToolsHelper.loadLibrary()
     }
     "SimpleLpProgram example runs" {
-        JnaOrToolsHelper.loadLibrary()
+        OrToolsHelper.loadLibrary()
 
         // Create the linear solver with the GLOP backend.
         val solver = MPSolver("SimpleLpProgram", MPSolver.OptimizationProblemType.GLOP_LINEAR_PROGRAMMING)

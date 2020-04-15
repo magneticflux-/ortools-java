@@ -7,7 +7,7 @@ import com.sun.jna.Platform
 /**
  * Helper to set up and load OR-Tools.
  */
-object JnaOrToolsHelper {
+object OrToolsHelper {
     /**
      * Call before using Google OR-Tools.
      */
