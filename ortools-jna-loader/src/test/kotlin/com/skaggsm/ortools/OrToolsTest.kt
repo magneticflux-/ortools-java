@@ -16,11 +16,7 @@ class OrToolsTest : StringSpec({
         JnaOrToolsHelper.loadLibrary()
 
         // Create the linear solver with the GLOP backend.
-
-        // Create the linear solver with the GLOP backend.
         val solver = MPSolver("SimpleLpProgram", MPSolver.OptimizationProblemType.GLOP_LINEAR_PROGRAMMING)
-
-        // Create the variables x and y.
 
         // Create the variables x and y.
         val x = solver.makeNumVar(0.0, 1.0, "x")
@@ -29,15 +25,11 @@ class OrToolsTest : StringSpec({
         solver.numVariables() shouldBe 2
 
         // Create a linear constraint, 0 <= x + y <= 2.
-
-        // Create a linear constraint, 0 <= x + y <= 2.
         val ct = solver.makeConstraint(0.0, 2.0, "ct")
         ct.setCoefficient(x, 1.0)
         ct.setCoefficient(y, 1.0)
 
         solver.numConstraints() shouldBe 1
-
-        // Create the objective function, 3 * x + y.
 
         // Create the objective function, 3 * x + y.
         val objective = solver.objective()
