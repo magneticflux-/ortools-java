@@ -18,9 +18,9 @@ dependencies {
     bundle(files("libs/com.google.ortools.jar"))
 
     testRuntimeOnly(project(":ortools-natives-all"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.0.2")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.0.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.0.5")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.0.5")
     testImplementation("org.slf4j:slf4j-nop:2.0.0-alpha1")
 }
 
