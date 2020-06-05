@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(project(":ortools-loader"))
+    api(project(":ortools-loader"))
 }

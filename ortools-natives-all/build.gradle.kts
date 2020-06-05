@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(project(":ortools-natives-linux"))
-    runtimeOnly(project(":ortools-natives-macos"))
-    runtimeOnly(project(":ortools-natives-windows"))
+    api(project(":ortools-natives-linux"))
+    api(project(":ortools-natives-macos"))
+    api(project(":ortools-natives-windows"))
 }

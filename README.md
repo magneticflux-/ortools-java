@@ -1,11 +1,11 @@
 # ortools-java
 
-Packages [Google OR-Tools](https://github.com/google/or-tools) as a self-extracting jar file at Maven coordinates `com.skaggsm.ortools:ortools-natives-all:7.6.7691`.
+Packages [Google OR-Tools](https://github.com/google/or-tools) as a self-extracting jar file at Maven coordinates `com.skaggsm.ortools:ortools-natives-all:7.6.7692`.
 
 ## How to Use
 
 1. Add my Bintray repository at `https://dl.bintray.com/magneticflux/maven` to resolve the artifacts
-2. Add a dependency on `com.skaggsm.ortools:ortools-natives-all:7.6.7691` in your build tool of choice
+2. Add a dependency on `com.skaggsm.ortools:ortools-natives-all:7.6.7692` in your build tool of choice
 3. Write code:
 ```java
 // Somewhere before using OR-Tools classes
