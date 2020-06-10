@@ -6,13 +6,19 @@ language: java
 git:
   lfs_skip_smudge: true
 
-matrix:
+jobs:
   include:
     - os: linux
-      jdk:
-        - openjdk8
+      jdk: openjdk8
+    - os: linux
+      jdk: openjdk11
+      env: SKIP_RELEASE=true
+    - os: linux
+      jdk: openjdk14
+      env: SKIP_RELEASE=true
     - os: osx
       osx_image: xcode11.3
+      jdk: openjdk14
       env: SKIP_RELEASE=true
       before_install:
         - brew install git-lfs
