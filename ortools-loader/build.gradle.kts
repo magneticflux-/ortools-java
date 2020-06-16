@@ -12,15 +12,15 @@ val bundle: Configuration by configurations.creating
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("net.java.dev.jna:jna:5.5.0")
-    implementation("com.google.protobuf:protobuf-java:3.11.4")
+    implementation("com.google.protobuf:protobuf-java:3.12.2")
     implementation("com.skaggsm:classpath-resource-extractor:0.2.0")
     api(files("libs/com.google.ortools.jar"))
     bundle(files("libs/com.google.ortools.jar"))
 
     testRuntimeOnly(project(":ortools-natives-all"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.0.5")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.0.5")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.0.6")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.0.6")
     testImplementation("org.slf4j:slf4j-nop:2.0.0-alpha1")
 }
 
