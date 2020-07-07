@@ -14,6 +14,40 @@ OrToolsHelper.loadLibrary();
 
 Before using, ensure the system meets the [minimum requirements for installing OR-Tools](https://developers.google.com/optimization/install).
 
+## Supported Java Versions
+
+### Simple Classpaths
+
+Basic requirements: >= Java 8
+
+### Complex Classpaths (Spring, etc.)
+
+Basic requirements: >= Java 11
+
+Confirmed working versions:
+
+- Java 11
+  - `OpenJDK Runtime Environment 18.9 (build 11.0.7+10)`
+  - `OpenJDK Runtime Environment AdoptOpenJDK (build 11.0.7+10)`
+  - `OpenJDK Runtime Environment GraalVM CE 20.1.0 (build 11.0.7+10-jvmci-20.1-b02)`
+- Java 12
+  - `OpenJDK Runtime Environment (build 12.0.2+10)`
+  - `OpenJDK Runtime Environment AdoptOpenJDK (build 12.0.2+10)`
+- Java 13
+  - `OpenJDK Runtime Environment (build 13.0.2+8)`
+  - `OpenJDK Runtime Environment AdoptOpenJDK (build 13.0.2+8)`
+  - `Java(TM) SE Runtime Environment (build 13.0.2+8)`
+  - Likely all versions
+- Java 14
+  - Likely all versions
+
+Confirmed ***NOT*** working versions:
+
+- Java 11
+  - `Java(TM) SE Runtime Environment 18.9 (build 11.0.7+8-LTS)`
+
+More information here: [#10](https://github.com/magneticflux-/ortools-java/issues/10).
+
 ## Details
 
 This library is divided into several modules:
