@@ -4,7 +4,7 @@ Packages [Google OR-Tools](https://github.com/google/or-tools) as a self-extract
 
 ## How to Use
 
-1. Add my Bintray repository at `https://dl.bintray.com/magneticflux/maven` to resolve the artifacts
+1. Add the JCenter repository to resolve the artifacts
 2. Add a dependency on `com.skaggsm.ortools:ortools-natives-all:7.7.7810` in your build tool of choice
 3. Write code:
 ```java
