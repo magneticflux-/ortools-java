@@ -2,10 +2,23 @@
 
 Packages [Google OR-Tools](https://github.com/google/or-tools) as a self-extracting jar file at Maven coordinates `com.skaggsm.ortools:ortools-natives-all:7.8.7959`.
 
+## Why?
+
+There are two types of existing solutions: those that require the natives to be bundled manually, and those that bundle natives and extract them on-demand:
+
+- Requiring the native libraries to be bundled with the application manually duplicates code, making it less intuitive to update since multiple things must be changed at once.
+- Bundling natives and extracting them on-demand is easy to do for simple classpaths (normal jars, no nesting, no fancy classloaders), however it becomes non-trivial when issues such as nested jars ([#10](https://github.com/magneticflux-/ortools-java/issues/10)) and OSGi loading ([#13](https://github.com/magneticflux-/ortools-java/issues/13)) arise.
+
+Solutions prior to this were of the former variety and were difficult to use and deploy, prone to human error, and infrequently updated.
+
+The new [official solution](https://github.com/google/or-tools/blob/a0a56698ba8fd07b7f84aee4fc45d891a8cd9828/ortools/java/Loader.java) borrows code for the simple classpath case from this project, but does not handle more complex classpaths.
+
+This solution is a superset of the official solution; it handles more complex classpaths.
+
 ## How to Use
 
 1. Add the JCenter repository to resolve the artifacts
-2. Add a dependency on `com.skaggsm.ortools:ortools-natives-all:7.7.7810` in your build tool of choice
+2. Add a dependency on `com.skaggsm.ortools:ortools-natives-all:7.8.7959` in your build tool of choice
 3. Write code:
 ```java
 // Somewhere before using OR-Tools classes
