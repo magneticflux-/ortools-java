@@ -10,7 +10,6 @@ plugins {
 val bundle: Configuration by configurations.creating
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
     implementation("net.java.dev.jna:jna:5.6.0")
     implementation("com.google.protobuf:protobuf-java:3.12.2")
     implementation("com.skaggsm:classpath-resource-extractor:0.2.0")
@@ -24,40 +23,39 @@ dependencies {
     testImplementation("org.slf4j:slf4j-nop:2.0.0-alpha1")
 }
 
-tasks.jar {
-    from(bundle.map { if (it.isDirectory) it else zipTree(it) })
-}
-
 tasks {
+    jar {
+        from(bundle.map { if (it.isDirectory) it else zipTree(it) })
+    }
+
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
-}
 
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events(
-            TestLogEvent.PASSED,
-            TestLogEvent.SKIPPED,
-            TestLogEvent.FAILED,
-            TestLogEvent.STANDARD_ERROR,
-            TestLogEvent.STANDARD_OUT
-        )
-        exceptionFormat = TestExceptionFormat.FULL
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events(
+                TestLogEvent.PASSED,
+                TestLogEvent.SKIPPED,
+                TestLogEvent.FAILED,
+                TestLogEvent.STANDARD_ERROR,
+                TestLogEvent.STANDARD_OUT
+            )
+            exceptionFormat = TestExceptionFormat.FULL
+        }
+        systemProperty("jna.debug_load", true)
     }
-    systemProperty("jna.debug_load", true)
-}
-
-tasks.javadoc {
-    options {
-        (this as StandardJavadocDocletOptions).tags(
-            "apiNote:a:API Note:",
-            "implSpec:a:Implementation Requirements:",
-            "implNote:a:Implementation Note:"
-        )
+    javadoc {
+        options {
+            (this as StandardJavadocDocletOptions).tags(
+                "apiNote:a:API Note:",
+                "implSpec:a:Implementation Requirements:",
+                "implNote:a:Implementation Note:"
+            )
+        }
     }
 }
