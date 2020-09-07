@@ -1,7 +1,6 @@
 package com.skaggsm.ortools;
 
 import com.skaggsm.ClasspathUtils;
-import com.sun.jna.Platform;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,6 +10,21 @@ import java.nio.file.Path;
  * Helper to set up and load OR-Tools.
  */
 public final class OrToolsHelper {
+    private final static String RESOURCE_PREFIX;
+
+    static {
+        String libraryName = System.mapLibraryName("x");
+
+        if (libraryName.endsWith("dll"))
+            RESOURCE_PREFIX = "win32-x86-64";
+        else if (libraryName.endsWith("dylib"))
+            RESOURCE_PREFIX = "darwin";
+        else if (libraryName.endsWith("so"))
+            RESOURCE_PREFIX = "linux-x86-64";
+        else
+            throw new Error("Unable to determine resource prefix! This environment may not be supported.");
+    }
+
     private OrToolsHelper() {
     }
 
@@ -21,7 +35,7 @@ public final class OrToolsHelper {
      */
     public static void loadLibrary(Class<?> klass) {
         Path path = extractLibrary(klass);
-        System.load(path.resolve(Platform.RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
+        System.load(path.resolve(RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
     }
 
     /**
@@ -31,7 +45,7 @@ public final class OrToolsHelper {
      */
     public static void loadLibrary(ClassLoader classLoader) {
         Path path = extractLibrary(classLoader);
-        System.load(path.resolve(Platform.RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
+        System.load(path.resolve(RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
     }
 
     /**
@@ -46,9 +60,9 @@ public final class OrToolsHelper {
     private static Path extractLibrary(Object classOrClassloader) {
         try {
             if (classOrClassloader instanceof Class<?>) {
-                return ClasspathUtils.extractResourcesToTempDirectory(Platform.RESOURCE_PREFIX + '/', "ortools-java", (Class<?>) classOrClassloader);
+                return ClasspathUtils.extractResourcesToTempDirectory(RESOURCE_PREFIX + '/', "ortools-java", (Class<?>) classOrClassloader);
             } else if (classOrClassloader instanceof ClassLoader) {
-                return ClasspathUtils.extractResourcesToTempDirectory(Platform.RESOURCE_PREFIX + '/', "ortools-java", (ClassLoader) classOrClassloader);
+                return ClasspathUtils.extractResourcesToTempDirectory(RESOURCE_PREFIX + '/', "ortools-java", (ClassLoader) classOrClassloader);
             } else
                 throw new IllegalArgumentException("Not passed a class or classloader!");
         } catch (IOException e) {

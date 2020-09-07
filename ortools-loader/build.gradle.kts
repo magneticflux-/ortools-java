@@ -10,7 +10,6 @@ plugins {
 val bundle: Configuration by configurations.creating
 
 dependencies {
-    implementation("net.java.dev.jna:jna:5.6.0")
     implementation("com.google.protobuf:protobuf-java:3.12.2")
     implementation("com.skaggsm:classpath-resource-extractor:0.2.0")
     api(files("libs/com.google.ortools.jar"))
