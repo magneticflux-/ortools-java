@@ -1,6 +1,6 @@
 # ortools-java
 
-Packages [Google OR-Tools](https://github.com/google/or-tools) as a self-extracting jar file at Maven coordinates `com.skaggsm.ortools:ortools-natives-all:7.8.7959`.
+Packages [Google OR-Tools](https://github.com/google/or-tools) as a self-extracting jar file at Maven coordinates `com.skaggsm.ortools:ortools-natives-all:7.8.7960`.
 
 ## Why?
 
@@ -18,7 +18,7 @@ This solution is a superset of the official solution; it handles more complex cl
 ## How to Use
 
 1. Add the JCenter repository to resolve the artifacts
-2. Add a dependency on `com.skaggsm.ortools:ortools-natives-all:7.8.7959` in your build tool of choice
+2. Add a dependency on `com.skaggsm.ortools:ortools-natives-all:7.8.7960` in your build tool of choice
 3. Write code:
 ```java
 // Somewhere before using OR-Tools classes
