@@ -1,5 +1,6 @@
 plugins {
-    id("org.shipkit.java") version "2.3.1"
+    id("org.shipkit.java") version "2.3.5"
+    id("com.github.ben-manes.versions") version "0.36.0"
 }
 
 subprojects {
