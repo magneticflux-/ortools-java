@@ -1,28 +1,39 @@
 package com.skaggsm.ortools;
 
-import com.skaggsm.ClasspathUtils;
-
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 
 /**
  * Helper to set up and load OR-Tools.
  */
 public final class OrToolsHelper {
-    private final static String RESOURCE_PREFIX;
+    private static final String RESOURCE_PREFIX;
+    private static final String RESOURCE_SUFFIX;
+    private static final String[] FILES_TO_EXTRACT;
 
     static {
-        String libraryName = System.mapLibraryName("x");
-
-        if (libraryName.endsWith("dll"))
-            RESOURCE_PREFIX = "win32-x86-64";
-        else if (libraryName.endsWith("dylib"))
-            RESOURCE_PREFIX = "darwin";
-        else if (libraryName.endsWith("so"))
-            RESOURCE_PREFIX = "linux-x86-64";
-        else
-            throw new Error("Unable to determine resource prefix! This environment may not be supported.");
+        RESOURCE_SUFFIX = System.mapLibraryName("test").split("test\\.")[1];
+        switch (RESOURCE_SUFFIX) {
+            case "dll":
+                RESOURCE_PREFIX = "win32-x86-64";
+                FILES_TO_EXTRACT = new String[]{"jniortools"};
+                break;
+            case "so":
+                RESOURCE_PREFIX = "linux-x86-64";
+                FILES_TO_EXTRACT = new String[]{"libjniortools", "libortools"};
+                break;
+            case "dylib":
+                RESOURCE_PREFIX = "darwin-x86-64";
+                FILES_TO_EXTRACT = new String[]{"libjniortools", "libortools"};
+                break;
+            default:
+                throw new UnsupportedOperationException(String.format("Unknown library suffix %s!", RESOURCE_SUFFIX));
+        }
     }
 
     private OrToolsHelper() {
@@ -33,7 +44,7 @@ public final class OrToolsHelper {
      *
      * @param klass The {@link Class} to load resources from
      */
-    public static void loadLibrary(Class<?> klass) {
+    public static void loadLibrary(HasResources klass) {
         Path path = extractLibrary(klass);
         System.load(path.resolve(RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
     }
@@ -44,7 +55,7 @@ public final class OrToolsHelper {
      * @param classLoader The {@link ClassLoader} to load resources from
      */
     public static void loadLibrary(ClassLoader classLoader) {
-        Path path = extractLibrary(classLoader);
+        Path path = extractLibrary((HasResources) classLoader);
         System.load(path.resolve(RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
     }
 
@@ -57,16 +68,28 @@ public final class OrToolsHelper {
         loadLibrary(OrToolsHelper.class.getClassLoader());
     }
 
-    private static Path extractLibrary(Object classOrClassloader) {
+    private static Path extractLibrary(HasResources classOrClassloader) {
         try {
-            if (classOrClassloader instanceof Class<?>) {
-                return ClasspathUtils.extractResourcesToTempDirectory(RESOURCE_PREFIX + '/', "ortools-java", (Class<?>) classOrClassloader);
-            } else if (classOrClassloader instanceof ClassLoader) {
-                return ClasspathUtils.extractResourcesToTempDirectory(RESOURCE_PREFIX + '/', "ortools-java", (ClassLoader) classOrClassloader);
-            } else
-                throw new IllegalArgumentException("Not passed a class or classloader!");
+            Path tempPath = Files.createTempDirectory("ortools-java");
+            tempPath.toFile().deleteOnExit();
+
+            for (String file : FILES_TO_EXTRACT) {
+                String fullPath = String.format("ortools-%s/%s.%s", RESOURCE_PREFIX, file, RESOURCE_SUFFIX);
+                URL url = Objects.requireNonNull(
+                        classOrClassloader.getResource(fullPath),
+                        String.format("Resource \"%s\" was not found in location \"%s\"", fullPath, classOrClassloader)
+                );
+                try (InputStream lib = url.openStream()) {
+                    Files.copy(lib, tempPath.resolve(file));
+                }
+            }
+            return tempPath;
         } catch (IOException e) {
-            throw new Error("Error during library extraction!", e);
+            throw new RuntimeException("I/O error while extracting natives!", e);
         }
+    }
+
+    private interface HasResources {
+        URL getResource(String name);
     }
 }
