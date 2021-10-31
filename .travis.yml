@@ -12,16 +12,16 @@ jobs:
       dist: bionic
       jdk: openjdk8
     - os: linux
-      dist: bionic
+      dist: focal
       jdk: openjdk11
       env: SKIP_RELEASE=true
     - os: linux
-      dist: bionic
-      jdk: openjdk14
+      dist: focal
+      jdk: openjdk15
       env: SKIP_RELEASE=true
     - os: osx
-      osx_image: xcode12.2
-      jdk: openjdk14
+      osx_image: xcode13.1
+      jdk: openjdk17
       env: SKIP_RELEASE=true
       before_install:
         - brew install git-lfs

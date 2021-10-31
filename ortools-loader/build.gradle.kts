@@ -3,22 +3,19 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     `java-library`
-    kotlin("jvm") version "1.4.30-M1"
+    kotlin("jvm") version "1.5.31"
 }
 
 val bundle: Configuration by configurations.creating
 
 dependencies {
-    implementation("com.google.protobuf:protobuf-java:3.14.0")
-    implementation("com.skaggsm:classpath-resource-extractor:0.2.0")
-    api(files("libs/com.google.ortools.jar"))
-    bundle(files("libs/com.google.ortools.jar"))
+    api("com.google.ortools:ortools-java:9.1.9490")
 
     testRuntimeOnly(project(":ortools-natives-all"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.4.0.RC1")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:4.4.0.RC1")
-    testImplementation("org.slf4j:slf4j-nop:2.0.0-alpha1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.6.3")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.3")
+    testImplementation("org.slf4j:slf4j-nop:2.0.0-alpha5")
 }
 
 tasks {
