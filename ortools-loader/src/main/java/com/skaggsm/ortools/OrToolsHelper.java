@@ -13,12 +13,12 @@ import java.util.Objects;
  */
 public final class OrToolsHelper {
     private static final String RESOURCE_PREFIX;
-    private static final String RESOURCE_SUFFIX;
     private static final String[] FILES_TO_EXTRACT;
+    private static boolean loaded = false;
 
     static {
-        RESOURCE_SUFFIX = System.mapLibraryName("test").split("test\\.")[1];
-        switch (RESOURCE_SUFFIX) {
+        String resourceSuffix = System.mapLibraryName("test").split("test\\.")[1];
+        switch (resourceSuffix) {
             case "dll":
                 RESOURCE_PREFIX = "win32-x86-64";
                 FILES_TO_EXTRACT = new String[]{"jniortools"};
@@ -32,7 +32,7 @@ public final class OrToolsHelper {
                 FILES_TO_EXTRACT = new String[]{"libjniortools", "libortools"};
                 break;
             default:
-                throw new UnsupportedOperationException(String.format("Unknown library suffix %s!", RESOURCE_SUFFIX));
+                throw new UnsupportedOperationException(String.format("Unknown library suffix %s!", resourceSuffix));
         }
     }
 
@@ -44,9 +44,12 @@ public final class OrToolsHelper {
      *
      * @param klass The {@link Class} to load resources from
      */
-    public static void loadLibrary(HasResources klass) {
-        Path path = extractLibrary(klass);
-        System.load(path.resolve(RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
+    public static synchronized void loadLibrary(Class<?> klass) {
+        if (loaded)
+            return;
+        Path path = extractLibrary(HasResources.build(klass));
+        System.load(path.resolve(System.mapLibraryName("jniortools")).toString());
+        loaded = true;
     }
 
     /**
@@ -54,9 +57,12 @@ public final class OrToolsHelper {
      *
      * @param classLoader The {@link ClassLoader} to load resources from
      */
-    public static void loadLibrary(ClassLoader classLoader) {
-        Path path = extractLibrary((HasResources) classLoader);
-        System.load(path.resolve(RESOURCE_PREFIX).resolve(System.mapLibraryName("jniortools")).toString());
+    public static synchronized void loadLibrary(ClassLoader classLoader) {
+        if (loaded)
+            return;
+        Path path = extractLibrary(HasResources.build(classLoader));
+        System.load(path.resolve(System.mapLibraryName("jniortools")).toString());
+        loaded = true;
     }
 
     /**
@@ -64,32 +70,29 @@ public final class OrToolsHelper {
      *
      * @implNote This method calls {@link OrToolsHelper#loadLibrary(ClassLoader)} with the classloader that loaded this class.
      */
-    public static void loadLibrary() {
+    public static synchronized void loadLibrary() {
         loadLibrary(OrToolsHelper.class.getClassLoader());
     }
 
-    private static Path extractLibrary(HasResources classOrClassloader) {
+    private static synchronized Path extractLibrary(HasResources classOrClassloader) {
         try {
             Path tempPath = Files.createTempDirectory("ortools-java");
             tempPath.toFile().deleteOnExit();
 
             for (String file : FILES_TO_EXTRACT) {
-                String fullPath = String.format("ortools-%s/%s.%s", RESOURCE_PREFIX, file, RESOURCE_SUFFIX);
+                String fullFile = System.mapLibraryName(file);
+                String fullPath = String.format("ortools-%s/%s", RESOURCE_PREFIX, fullFile);
                 URL url = Objects.requireNonNull(
                         classOrClassloader.getResource(fullPath),
                         String.format("Resource \"%s\" was not found in location \"%s\"", fullPath, classOrClassloader)
                 );
                 try (InputStream lib = url.openStream()) {
-                    Files.copy(lib, tempPath.resolve(file));
+                    Files.copy(lib, tempPath.resolve(fullFile));
                 }
             }
             return tempPath;
         } catch (IOException e) {
             throw new RuntimeException("I/O error while extracting natives!", e);
         }
-    }
-
-    private interface HasResources {
-        URL getResource(String name);
     }
 }
