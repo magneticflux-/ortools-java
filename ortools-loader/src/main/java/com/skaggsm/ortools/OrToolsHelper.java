@@ -13,26 +13,27 @@ import java.util.Objects;
  */
 public final class OrToolsHelper {
     private static final String RESOURCE_PREFIX;
+    private static final String RESOURCE_SUFFIX;
     private static final String[] FILES_TO_EXTRACT;
     private static boolean loaded = false;
 
     static {
-        String resourceSuffix = System.mapLibraryName("test").split("test\\.")[1];
-        switch (resourceSuffix) {
+        RESOURCE_SUFFIX = System.mapLibraryName("test").split("test\\.")[1];
+        switch (RESOURCE_SUFFIX) {
             case "dll":
                 RESOURCE_PREFIX = "win32-x86-64";
                 FILES_TO_EXTRACT = new String[]{"jniortools"};
                 break;
             case "so":
                 RESOURCE_PREFIX = "linux-x86-64";
-                FILES_TO_EXTRACT = new String[]{"libjniortools", "libortools"};
+                FILES_TO_EXTRACT = new String[]{"libortools", "libjniortools"};
                 break;
             case "dylib":
                 RESOURCE_PREFIX = "darwin-x86-64";
-                FILES_TO_EXTRACT = new String[]{"libjniortools", "libortools"};
+                FILES_TO_EXTRACT = new String[]{"libortools", "libjniortools"};
                 break;
             default:
-                throw new UnsupportedOperationException(String.format("Unknown library suffix %s!", resourceSuffix));
+                throw new UnsupportedOperationException(String.format("Unknown library suffix %s!", RESOURCE_SUFFIX));
         }
     }
 
@@ -48,7 +49,7 @@ public final class OrToolsHelper {
         if (loaded)
             return;
         Path path = extractLibrary(HasResources.build(klass));
-        System.load(path.resolve(System.mapLibraryName("jniortools")).toString());
+        System.load(path.toString());
         loaded = true;
     }
 
@@ -61,7 +62,7 @@ public final class OrToolsHelper {
         if (loaded)
             return;
         Path path = extractLibrary(HasResources.build(classLoader));
-        System.load(path.resolve(System.mapLibraryName("jniortools")).toString());
+        System.load(path.toString());
         loaded = true;
     }
 
@@ -79,18 +80,22 @@ public final class OrToolsHelper {
             Path tempPath = Files.createTempDirectory("ortools-java");
             tempPath.toFile().deleteOnExit();
 
+            Path toReturn = null;
             for (String file : FILES_TO_EXTRACT) {
-                String fullFile = System.mapLibraryName(file);
+                String fullFile = String.format("%s.%s", file, RESOURCE_SUFFIX);
                 String fullPath = String.format("ortools-%s/%s", RESOURCE_PREFIX, fullFile);
                 URL url = Objects.requireNonNull(
                         classOrClassloader.getResource(fullPath),
                         String.format("Resource \"%s\" was not found in location \"%s\"", fullPath, classOrClassloader)
                 );
                 try (InputStream lib = url.openStream()) {
-                    Files.copy(lib, tempPath.resolve(fullFile));
+                    Path p = tempPath.resolve(fullFile);
+                    Files.copy(lib, p);
+                    toReturn = p;
                 }
             }
-            return tempPath;
+            assert toReturn != null;
+            return toReturn;
         } catch (IOException e) {
             throw new RuntimeException("I/O error while extracting natives!", e);
         }
