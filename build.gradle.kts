@@ -15,6 +15,7 @@ tasks.withType<DependencyUpdatesTask> {
 
 subprojects {
     apply<JavaBasePlugin>()
+    apply(plugin = "maven-publish")
 
     group = "com.skaggsm.ortools"
 
@@ -24,5 +25,22 @@ subprojects {
 
     configure<JavaPluginConvention> {
         sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    configure<PublishingExtension> {
+        repositories {
+            mavenLocal()
+            maven {
+                name = "Personal"
+                url = uri("https://maven.skaggsm.com/releases")
+                credentials {
+                    username = "deploy"
+                    password = System.getenv("MAVEN_TOKEN")
+                }
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
+            }
+        }
     }
 }
